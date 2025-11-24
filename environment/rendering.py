@@ -75,10 +75,12 @@ def render_frame(env, last_action, last_reward, rgb=False):
         txt = env.font_small.render("POLICE", True, (255, 255, 255))
         screen.blit(txt, (x*cell + 10, y*cell + 20))
 
-    # Traffic lights (dynamic color based on cycle)
-    light_cycle = (env.step_count // 40) % 2
+    # Traffic lights (static color based on episode state)
     for x, y in env.traffic_lights:
-        if light_cycle == 0:  # Red
+        # Check the static state from the environment
+        is_red = env.traffic_light_states.get((x, y), 0)
+        
+        if is_red:  # Red
             color = (255, 0, 0)
             light_text = "🔴"
         else:  # Green

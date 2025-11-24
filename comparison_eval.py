@@ -104,8 +104,9 @@ def main():
     # ===== REINFORCE =====
     try:
         print("Evaluating REINFORCE...")
-        reinforce_model = Policy(hidden_size=256)
-        reinforce_model.load_state_dict(torch.load("models/reinforce/best_reinforce.pth"))
+        # Architecture matches the saved checkpoint: Input 14 -> Hidden 64 -> Output 5
+        reinforce_model = Policy(hidden_size=64)
+        reinforce_model.load_state_dict(torch.load("models/reinforce/best_reinforce_policy.pth"))
         reinforce_model.eval()
         reinforce_metrics = evaluate_model(reinforce_model, env, n_episodes=100, model_type="reinforce")
         results["REINFORCE"] = reinforce_metrics

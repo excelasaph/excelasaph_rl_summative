@@ -1,0 +1,42 @@
+{
+  "DQN": {
+    "mean_reward": 422.9,
+    "std_reward": 21.6395471301966,
+    "max_reward": 468.0,
+    "min_reward": 380.0,
+    "avg_passengers": 19.0,
+    "legal_compliance": 1.0,
+    "crash_rate": 0.0,
+    "fine_rate": 0.0
+  },
+  "PPO": {
+    "mean_reward": 426.86,
+    "std_reward": 22.361135928212594,
+    "max_reward": 468.0,
+    "min_reward": 380.0,
+    "avg_passengers": 19.0,
+    "legal_compliance": 1.0,
+    "crash_rate": 0.0,
+    "fine_rate": 0.0
+  },
+  "A2C": {
+    "mean_reward": 422.24,
+    "std_reward": 22.149094789629668,
+    "max_reward": 468.0,
+    "min_reward": 380.0,
+    "avg_passengers": 19.0,
+    "legal_compliance": 1.0,
+    "crash_rate": 0.0,
+    "fine_rate": 0.0
+  },
+  "REINFORCE": {
+    "mean_reward": 425.76,
+    "std_reward": 22.36654644776435,
+    "max_reward": 468.0,
+    "min_reward": 380.0,
+    "avg_passengers": 19.0,
+    "legal_compliance": 1.0,
+    "crash_rate": 0.0,
+    "fine_rate": 0.0
+  }
+}

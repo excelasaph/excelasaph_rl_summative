@@ -1,0 +1,98 @@
+{
+  "LR_1e3_hid_64": {
+    "mean_reward": 423.12,
+    "std_reward": 20.619059144393567,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "hidden_dim": 64
+    }
+  },
+  "LR_1e3_hid_128": {
+    "mean_reward": 402.62,
+    "std_reward": 22.72697956174555,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "hidden_dim": 128
+    }
+  },
+  "LR_3e3_hid_64": {
+    "mean_reward": 376.0,
+    "std_reward": 23.69472515139182,
+    "hyperparameters": {
+      "learning_rate": 0.003,
+      "hidden_dim": 64
+    }
+  },
+  "LR_3e3_hid_128": {
+    "mean_reward": 376.0,
+    "std_reward": 23.69472515139182,
+    "hyperparameters": {
+      "learning_rate": 0.003,
+      "hidden_dim": 128
+    }
+  },
+  "LR_5e3_hid_64": {
+    "mean_reward": 381.28,
+    "std_reward": 21.35700353514041,
+    "hyperparameters": {
+      "learning_rate": 0.005,
+      "hidden_dim": 64
+    }
+  },
+  "LR_5e3_hid_128": {
+    "mean_reward": 45.0,
+    "std_reward": 37.52332607858744,
+    "hyperparameters": {
+      "learning_rate": 0.005,
+      "hidden_dim": 128
+    }
+  },
+  "LR_1e2_hid_64": {
+    "mean_reward": 237.04,
+    "std_reward": 24.209882279763363,
+    "hyperparameters": {
+      "learning_rate": 0.01,
+      "hidden_dim": 64
+    }
+  },
+  "LR_1e2_hid_128": {
+    "mean_reward": 236.48,
+    "std_reward": 28.200879418911743,
+    "hyperparameters": {
+      "learning_rate": 0.01,
+      "hidden_dim": 128
+    }
+  },
+  "LR_1e2_hid_256": {
+    "mean_reward": 358.44,
+    "std_reward": 23.018392645882116,
+    "hyperparameters": {
+      "learning_rate": 0.01,
+      "hidden_dim": 256
+    }
+  },
+  "LR_5e3_hid_256": {
+    "mean_reward": 225.84,
+    "std_reward": 28.161931751923554,
+    "hyperparameters": {
+      "learning_rate": 0.005,
+      "hidden_dim": 256
+    }
+  },
+  "LR_3e3_hid_256": {
+    "mean_reward": 354.3,
+    "std_reward": 22.180396750283798,
+    "hyperparameters": {
+      "learning_rate": 0.003,
+      "hidden_dim": 256
+    }
+  },
+  "LR_1e3_hid_256": {
+    "mean_reward": 406.72,
+    "std_reward": 17.397746980571938,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "hidden_dim": 256
+    }
+  }
+}

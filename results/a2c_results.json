@@ -1,0 +1,134 @@
+{
+  "LR_1e4_n5_g099": {
+    "mean_reward": 426.2,
+    "std_reward": 20.754758490524527,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "n_steps": 5,
+      "gamma": 0.65,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.0
+    }
+  },
+  "LR_1e4_n5_g0995": {
+    "mean_reward": 427.52,
+    "std_reward": 19.85370494391412,
+    "hyperparameters": {
+      "learning_rate": 0.0001,
+      "n_steps": 5,
+      "gamma": 0.7,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.0
+    }
+  },
+  "LR_3e4_n8_g099": {
+    "mean_reward": 423.56,
+    "std_reward": 21.325252636252635,
+    "hyperparameters": {
+      "learning_rate": 0.0003,
+      "n_steps": 8,
+      "gamma": 0.75,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.005
+    }
+  },
+  "LR_3e4_n8_g0995": {
+    "mean_reward": 423.56,
+    "std_reward": 18.92,
+    "hyperparameters": {
+      "learning_rate": 0.0003,
+      "n_steps": 8,
+      "gamma": 0.77,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.005
+    }
+  },
+  "LR_5e4_n10_g099": {
+    "mean_reward": 417.08,
+    "std_reward": 23.757811347007536,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "n_steps": 10,
+      "gamma": 0.8,
+      "gae_lambda": 1.0,
+      "ent_coef": 0.01
+    }
+  },
+  "LR_5e4_n10_g0995": {
+    "mean_reward": 428.84,
+    "std_reward": 22.560460988197914,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "n_steps": 10,
+      "gamma": 0.85,
+      "gae_lambda": 1.0,
+      "ent_coef": 0.01
+    }
+  },
+  "LR_7e4_n5_g099": {
+    "mean_reward": 421.36,
+    "std_reward": 22.71013870499253,
+    "hyperparameters": {
+      "learning_rate": 0.0007,
+      "n_steps": 5,
+      "gamma": 0.9,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.05
+    }
+  },
+  "LR_7e4_n5_g0995": {
+    "mean_reward": 404.52,
+    "std_reward": 22.013850185735343,
+    "hyperparameters": {
+      "learning_rate": 0.0007,
+      "n_steps": 5,
+      "gamma": 0.95,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.05
+    }
+  },
+  "LR_1e3_n8_g099": {
+    "mean_reward": 375.12,
+    "std_reward": 21.98239295436236,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "n_steps": 8,
+      "gamma": 0.995,
+      "gae_lambda": 1.0,
+      "ent_coef": 0.01
+    }
+  },
+  "LR_1e3_n8_g0995": {
+    "mean_reward": 420.48,
+    "std_reward": 20.335427214592762,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "n_steps": 8,
+      "gamma": 0.67,
+      "gae_lambda": 1.0,
+      "ent_coef": 0.01
+    }
+  },
+  "LR_1e3_n10_g099": {
+    "mean_reward": 378.64,
+    "std_reward": 23.13245339344705,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "n_steps": 10,
+      "gamma": 0.77,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.0
+    }
+  },
+  "LR_1e3_n10_g0995": {
+    "mean_reward": 429.72,
+    "std_reward": 24.023355302704907,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "n_steps": 10,
+      "gamma": 0.98,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.0
+    }
+  }
+}
