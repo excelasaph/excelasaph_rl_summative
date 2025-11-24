@@ -69,51 +69,50 @@ def create_hyperparameter_tables(training_results, pdf_pages):
         
         if algo == "DQN":
             headers = ['Config', 'LR', 'Buffer', 'Exp Frac', 'Mean Reward']
-            for r in results:
-                hp = r['hyperparams']
+            for r in results.values():
+                hp = r.get('hyperparams', r.get('hyperparameters'))
                 table_data.append([
-                    f"#{r['config']}",
-                    f"{hp['lr']:.0e}",
-                    f"{hp['buffer_size']//1000}K",
-                    f"{hp['exp_frac']:.2f}",
+                    f"#{r.get('config', '?')}",
+                    f"{hp.get('lr', hp.get('learning_rate', 0)):.0e}",
+                    f"{hp.get('buffer_size', 0)//1000}K",
+                    f"{hp.get('exp_frac', hp.get('exploration_fraction', 0)):.2f}",
                     f"{r['mean_reward']:.1f}",
                 ])
         
         elif algo == "PPO":
             headers = ['Config', 'LR', 'Ent', 'n_steps', 'Batch', 'Mean Reward']
-            for r in results:
-                hp = r['hyperparams']
+            for r in results.values():
+                hp = r.get('hyperparams', r.get('hyperparameters'))
                 table_data.append([
-                    f"#{r['config']}",
-                    f"{hp['lr']:.0e}",
-                    f"{hp['ent_coef']:.3f}",
-                    f"{hp['n_steps']}",
-                    f"{hp['batch_size']}",
+                    f"#{r.get('config', '?')}",
+                    f"{hp.get('lr', hp.get('learning_rate', 0)):.0e}",
+                    f"{hp.get('ent_coef', 0):.3f}",
+                    f"{hp.get('n_steps', 0)}",
+                    f"{hp.get('batch_size', 0)}",
                     f"{r['mean_reward']:.1f}",
                 ])
         
         elif algo == "A2C":
             headers = ['Config', 'LR', 'n_steps', 'Gamma', 'GAE', 'Mean Reward']
-            for r in results:
-                hp = r['hyperparams']
+            for r in results.values():
+                hp = r.get('hyperparams', r.get('hyperparameters'))
                 table_data.append([
-                    f"#{r['config']}",
-                    f"{hp['lr']:.0e}",
-                    f"{hp['n_steps']}",
-                    f"{hp['gamma']:.4f}",
-                    f"{hp['gae_lambda']:.2f}",
+                    f"#{r.get('config', '?')}",
+                    f"{hp.get('lr', hp.get('learning_rate', 0)):.0e}",
+                    f"{hp.get('n_steps', 0)}",
+                    f"{hp.get('gamma', 0):.4f}",
+                    f"{hp.get('gae_lambda', 0):.2f}",
                     f"{r['mean_reward']:.1f}",
                 ])
         
         elif algo == "REINFORCE":
-            headers = ['Config', 'LR', 'Hidden', 'Gamma', 'Mean Reward']
-            for r in results:
-                hp = r['hyperparams']
+            headers = ['Config', 'LR', 'Hidden', 'Mean Reward']
+            for r in results.values():
+                hp = r.get('hyperparams', r.get('hyperparameters'))
                 table_data.append([
-                    f"#{r['config']}",
-                    f"{hp['lr']:.0e}",
-                    f"{hp['hidden']}",
-                    f"{hp['gamma']:.4f}",
+                    f"#{r.get('config', '?')}",
+                    f"{hp.get('lr', hp.get('learning_rate', 0)):.0e}",
+                    f"{hp.get('hidden', hp.get('hidden_dim', 0))}",
                     f"{r['mean_reward']:.1f}",
                 ])
         
@@ -160,7 +159,7 @@ def create_performance_comparison(training_results, comparison_results, pdf_page
     
     for algo in algorithms:
         if algo in training_results and training_results[algo]:
-            results = training_results[algo]
+            results = list(training_results[algo].values())
             means = [r['mean_reward'] for r in results]
             stds = [r['std_reward'] for r in results]
             all_rewards[algo] = means
@@ -300,7 +299,7 @@ KEY FINDINGS
         
         for algo, results in training_results.items():
             if results:
-                max_reward = max([r['mean_reward'] for r in results])
+                max_reward = max([r['mean_reward'] for r in results.values()])
                 if max_reward > best_reward:
                     best_reward = max_reward
                     best_algo = algo

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@react-three/rapier": "^2.2.0",
+    "howler": "^2.2.4"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "LR_1e4_buf_10k_eps_025": {
+    "mean_reward": 422.06,
+    "std_reward": 22.61097963379738,
+    "hyperparameters": {
+      "learning_rate": 0.0001,
+      "buffer_size": 100000,
+      "exploration_fraction": 0.25,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.65
+    }
+  },
+  "LR_1e4_buf_50k_eps_05": {
+    "mean_reward": 424.16,
+    "std_reward": 21.402205493827033,
+    "hyperparameters": {
+      "learning_rate": 0.0001,
+      "buffer_size": 50000,
+      "exploration_fraction": 0.5,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.7
+    }
+  },
+  "LR_3e4_buf_10k_eps_025": {
+    "mean_reward": 418.42,
+    "std_reward": 19.013773954688745,
+    "hyperparameters": {
+      "learning_rate": 0.0003,
+      "buffer_size": 10000,
+      "exploration_fraction": 0.25,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.75
+    }
+  },
+  "LR_3e4_buf_50k_eps_05": {
+    "mean_reward": 420.6,
+    "std_reward": 25.412595302329905,
+    "hyperparameters": {
+      "learning_rate": 0.0003,
+      "buffer_size": 50000,
+      "exploration_fraction": 0.5,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.77
+    }
+  },
+  "LR_5e4_buf_10k_eps_025": {
+    "mean_reward": 426.58,
+    "std_reward": 27.201536721295728,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "buffer_size": 10000,
+      "exploration_fraction": 0.25,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.1,
+      "gamma": 0.8
+    }
+  },
+  "LR_5e4_buf_50k_eps_05": {
+    "mean_reward": 426.2,
+    "std_reward": 20.754758490524527,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "buffer_size": 50000,
+      "exploration_fraction": 0.5,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.1,
+      "gamma": 0.85
+    }
+  },
+  "LR_7e4_buf_10k_eps_025": {
+    "mean_reward": 413.36,
+    "std_reward": 19.768419259010063,
+    "hyperparameters": {
+      "learning_rate": 0.0007,
+      "buffer_size": 10000,
+      "exploration_fraction": 0.25,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.02,
+      "gamma": 0.9
+    }
+  },
+  "LR_7e4_buf_50k_eps_05": {
+    "mean_reward": 422.44,
+    "std_reward": 20.36385032355129,
+    "hyperparameters": {
+      "learning_rate": 0.0007,
+      "buffer_size": 50000,
+      "exploration_fraction": 0.5,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.02,
+      "gamma": 0.95
+    }
+  },
+  "LR_1e3_buf_10k_eps_025": {
+    "mean_reward": 418.22,
+    "std_reward": 23.48300662181059,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "buffer_size": 10000,
+      "exploration_fraction": 0.25,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.995
+    }
+  },
+  "LR_1e3_buf_50k_eps_05": {
+    "mean_reward": 422.24,
+    "std_reward": 19.598530557161677,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "buffer_size": 50000,
+      "exploration_fraction": 0.5,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.67
+    }
+  },
+  "LR_1e3_buf_100k_eps_1": {
+    "mean_reward": 427.52,
+    "std_reward": 20.335427214592762,
+    "hyperparameters": {
+      "learning_rate": 0.001,
+      "buffer_size": 100000,
+      "exploration_fraction": 1.0,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.05,
+      "gamma": 0.77
+    }
+  },
+  "LR_5e4_buf_100k_eps_1": {
+    "mean_reward": 431.04,
+    "std_reward": 22.624729832641098,
+    "hyperparameters": {
+      "learning_rate": 0.0005,
+      "buffer_size": 100000,
+      "exploration_fraction": 1.0,
+      "exploration_initial_eps": 1.0,
+      "exploration_final_eps": 0.1,
+      "gamma": 0.98
+    }
+  }
+}

@@ -15,11 +15,11 @@ class Policy(nn.Module):
     def __init__(self, hidden_size=128):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(15, hidden_size),
+            nn.Linear(14, hidden_size),
             nn.ReLU(),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Linear(hidden_size, 8),
+            nn.Linear(hidden_size, 5),
             nn.Softmax(dim=-1)
         )
         self.saved_log_probs = []

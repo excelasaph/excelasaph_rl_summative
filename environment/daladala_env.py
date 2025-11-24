@@ -20,6 +20,7 @@ class DaladalaEnv(gym.Env):
         # These will be randomized each reset
         self.police_checkpoints = []
         self.traffic_lights = []
+        self.traffic_light_states = {}  # Stores state (Red=1, Green=0) for each light
         
         # Pools for randomization
         self.available_positions = [pos for pos in self.route if pos not in self.high_demand_stops]
@@ -44,6 +45,10 @@ class DaladalaEnv(gym.Env):
             sampled = np.random.choice(len(available), 7, replace=False)
             self.police_checkpoints = [available[i] for i in sampled[:3]]
             self.traffic_lights = [available[i] for i in sampled[3:7]]
+            
+            # Assign random constant state (Red=1, Green=0) for each light this episode
+            # This ensures the light stays the same throughout the episode
+            self.traffic_light_states = {pos: np.random.randint(0, 2) for pos in self.traffic_lights}
         
         # Initialize deterministic passenger counts per stop (seeded by position)
         self.passengers_at_stop = {}
@@ -65,8 +70,8 @@ class DaladalaEnv(gym.Env):
             x, y = self.route[self.pos_idx]
 
         # === CURRENT LOCATION HAZARDS ===
-        # Traffic light: RED on even cycles, GREEN on odd cycles
-        light_is_red = 1 if (x, y) in self.traffic_lights and (self.light_cycle % 2 == 0) else 0
+        # Traffic light: Constant state for this episode (Red=1, Green=0)
+        light_is_red = self.traffic_light_states.get((x, y), 0)
         
         # Police checkpoint detection
         police_here = 1 if (x, y) in self.police_checkpoints else 0
@@ -79,7 +84,7 @@ class DaladalaEnv(gym.Env):
         next_x, next_y = self.route[next_idx]
         
         # Check what's ahead
-        next_light_is_red = 1 if (next_x, next_y) in self.traffic_lights and (self.light_cycle % 2 == 0) else 0
+        next_light_is_red = self.traffic_light_states.get((next_x, next_y), 0)
         police_ahead = 1 if (next_x, next_y) in self.police_checkpoints else 0
         must_stop_next = 1 if (next_light_is_red or police_ahead) else 0
         
@@ -145,7 +150,7 @@ class DaladalaEnv(gym.Env):
         reward = 0.0
         
         # Observe the CURRENT location (before action)
-        light_is_red = 1 if (x, y) in self.traffic_lights and (self.light_cycle % 2 == 0) else 0
+        light_is_red = self.traffic_light_states.get((x, y), 0)
         police_here = 1 if (x, y) in self.police_checkpoints else 0
         must_stop_here = 1 if (light_is_red or police_here) else 0
         at_stop = 1 if (x, y) in self.high_demand_stops else 0
