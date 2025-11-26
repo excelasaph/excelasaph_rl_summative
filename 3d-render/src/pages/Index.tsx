@@ -17,7 +17,7 @@ const Index = () => {
             Daladala
           </h1>
           <p className="text-xl md:text-2xl text-foreground drop-shadow-md italic">
-            The Corruption Dilemma
+            Autonomous Urban Transit
           </p>
           <p className="text-sm text-muted-foreground mt-4 drop-shadow">
             Press 1-4 to change camera • Simulated RL Agent Active

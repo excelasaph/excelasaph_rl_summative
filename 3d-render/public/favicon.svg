@@ -1,0 +1,61 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="roadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#1e40af" />
+        <stop offset="100%" stopColor="#3b82f6" />
+      </linearGradient>
+      <pattern id="checkers" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+         <rect width="20" height="20" fill="#60a5fa" fillOpacity="0.3"/>
+         <rect x="20" y="20" width="20" height="20" fill="#60a5fa" fillOpacity="0.3"/>
+      </pattern>
+    </defs>
+
+    <!-- Road -->
+    <path d="M50 400 Q 256 350 462 400 L 490 450 Q 256 420 20 450 Z" fill="url(#roadGradient)" />
+    <path d="M50 400 Q 256 350 462 400 L 490 450 Q 256 420 20 450 Z" fill="url(#checkers)" />
+
+    <!-- Bus Group -->
+    <g transform="translate(100, 100)">
+      <!-- Wheels (Back) -->
+      <circle cx="240" cy="260" r="22" fill="#1f2937" />
+      
+      <!-- Body Main (Side) -->
+      <path d="M80 250 L 280 240 L 280 100 Q 280 80 260 80 L 100 90 Q 80 90 80 110 Z" fill="#fbbf24" stroke="#b45309" strokeWidth="2" />
+      
+      <!-- Body Front -->
+      <path d="M80 250 L 20 250 L 20 120 Q 20 100 40 100 L 100 90 L 80 110 Z" fill="#f59e0b" stroke="#b45309" strokeWidth="2" />
+      
+      <!-- Roof Rack -->
+      <path d="M40 90 L 260 80" stroke="#374151" strokeWidth="4" strokeLinecap="round" />
+      <path d="M50 90 L 50 80 M 100 88 L 100 78 M 150 86 L 150 76 M 200 84 L 200 74 M 250 82 L 250 72" stroke="#374151" strokeWidth="2" />
+      <path d="M45 80 L 255 70" stroke="#374151" strokeWidth="2" strokeLinecap="round" />
+
+      <!-- Front Windshield -->
+      <path d="M25 130 L 75 125 L 75 180 L 25 180 Z" fill="#93c5fd" stroke="#1e3a8a" strokeWidth="1" />
+      
+      <!-- Side Windows -->
+      <path d="M90 120 L 130 118 L 130 180 L 90 180 Z" fill="#60a5fa" stroke="#1e3a8a" strokeWidth="1" />
+      <path d="M140 118 L 180 116 L 180 180 L 140 180 Z" fill="#60a5fa" stroke="#1e3a8a" strokeWidth="1" />
+      <path d="M190 116 L 230 114 L 230 180 L 190 180 Z" fill="#60a5fa" stroke="#1e3a8a" strokeWidth="1" />
+      
+      <!-- Stripe -->
+      <path d="M20 190 L 280 180 L 280 200 L 20 210 Z" fill="#d97706" />
+
+      <!-- Headlights -->
+      <circle cx="35" cy="220" r="8" fill="#fef3c7" stroke="#b45309" />
+      <circle cx="65" cy="218" r="8" fill="#fef3c7" stroke="#b45309" />
+      <rect x="40" y="230" width="20" height="10" fill="#1f2937" rx="2" />
+
+      <!-- Wheels (Front) -->
+      <circle cx="60" cy="260" r="22" fill="#1f2937" stroke="#000" strokeWidth="2" />
+      <circle cx="60" cy="260" r="8" fill="#9ca3af" />
+      
+      <circle cx="220" cy="250" r="22" fill="#1f2937" stroke="#000" strokeWidth="2" />
+      <circle cx="220" cy="250" r="8" fill="#9ca3af" />
+      
+      <!-- Tech Halo -->
+      <ellipse cx="150" cy="60" rx="80" ry="15" fill="none" stroke="#06b6d4" strokeWidth="2" strokeDasharray="4 4" transform="rotate(-5 150 60)" />
+      <ellipse cx="150" cy="50" rx="60" ry="10" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="4 4" transform="rotate(5 150 50)" />
+      <circle cx="150" cy="40" r="3" fill="#06b6d4" />
+    </g>
+</svg>
