@@ -637,5 +637,5 @@ if __name__ == '__main__':
     print("\n" + "="*80 + "\n")
     
     # Run with SocketIO support
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True, allow_unsafe_werkzeug=True)
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    # Disable reloader to prevent server restarts during model loading (which wipes state)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True, use_reloader=False, allow_unsafe_werkzeug=True)
