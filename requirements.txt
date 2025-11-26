@@ -14,3 +14,5 @@ flask-cors
 flask-socketio
 python-socketio
 python-engineio
+gunicorn
+eventlet

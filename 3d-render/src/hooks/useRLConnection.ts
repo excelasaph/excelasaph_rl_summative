@@ -8,7 +8,10 @@ interface RLStateUpdate {
   timestamp: number;
 }
 
-export const useRLConnection = (wsUrl: string = 'http://localhost:5000') => {
+// Use environment variable for API URL, fallback to localhost
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+export const useRLConnection = (wsUrl: string = API_URL) => {
   const socketRef = useRef<Socket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const { updateFromRL } = useGameStore();
