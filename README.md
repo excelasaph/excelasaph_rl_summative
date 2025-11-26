@@ -4,7 +4,7 @@
 
 This project applies reinforcement learning to address Tanzania's critical road safety crisis: **42% of road deaths are daladala passengers** (WHO 2023). The average daladala carries **58 passengers in a 33-seater bus**, causing catastrophic accidents due to overloading.
 
-**The Mission**: Train RL agents to discover the optimal balance between profitability and safety—that drivers should operate at 34–38 passengers, reject ~75% of bribes, and always comply with traffic laws to maximize long-term rewards.
+**The Mission**: Train RL agents to discover the optimal balance between profitability and safety—that drivers should operate at optimal capacity and always comply with traffic laws to maximize long-term rewards.
 
 ---
 
@@ -13,14 +13,14 @@ This project applies reinforcement learning to address Tanzania's critical road 
 ### The Real-World Context
 - **Country**: Tanzania, Dar es Salaam
 - **Problem**: Overloaded public transport (daladalas) causes 40% of fatal road accidents
-- **Root Cause**: Drivers earn only ~TSh 22,000/day operating legally → forced to overload + accept bribes
+- **Root Cause**: Drivers earn only ~TSh 22,000/day operating legally → forced to overload
 - **Challenge**: How can RL teach agents to maximize profit while minimizing crashes and fines?
 
 ### Why RL?
 Traditional rule-based systems fail because they don't account for:
 - Trade-offs between risk (overloading) and reward (more passengers = more income)
 - Dynamic decision-making under uncertainty (will I get caught at this police checkpoint?)
-- Exploration vs. exploitation (when to take bribes vs. stay safe?)
+- Exploration vs. exploitation
 
 RL discovers this balance autonomously through trial and error.
 
@@ -41,27 +41,24 @@ RL discovers this balance autonomously through trial and error.
 | Type | Locations | Purpose |
 |------|-----------|---------|
 | **High-Demand Stops** | (4,14), (8,14), (14,8), (14,3) | Pick up/drop off passengers |
-| **Police Checkpoints** | (6,14), (11,14), (14,10) | Enforce legal capacity |
-| **Traffic Lights** | (3,14), (10,14), (14,12), (14,5) | Cyclic red/green (40 steps) |
+| **Police Checkpoints** | Randomized (3 per episode) | Enforce legal capacity |
+| **Traffic Lights** | Randomized (4 per episode) | Cyclic red/green |
 
 ---
 
-## Action Space (8 Discrete Actions)
+## Action Space (5 Discrete Actions)
 
 | Action | Code | Effect |
 |--------|------|--------|
-| **Move Forward** | 0 | Advance 1 cell (progress = +0.6 reward) |
-| **Stop** | 1 | Hold position (safe at police/lights) |
-| **Pick Up Passengers** | 2 | At high-demand stop: +4–8 passengers |
-| **Drop Off Passengers** | 3 | At high-demand stop: −6–15 passengers |
-| **Hard Accelerate** | 4 | Speed = 3 (RISKY if overloaded) |
-| **Hard Brake** | 5 | Speed = 0 (RISKY if overloaded) |
-| **Accept Bribe** | 6 | At high-demand stop: +15 cash, +2–5 passengers |
-| **Reject Bribe** | 7 | At high-demand stop: +30 honesty bonus |
+| **Move Forward** | 0 | Advance 1 cell (progress = +2 reward) |
+| **Pick Up Passengers** | 1 | At high-demand stop: +passengers |
+| **Drop Off Passengers** | 2 | At high-demand stop: -passengers, +revenue |
+| **Stop** | 3 | Decelerate/Hold position (safe at police/lights) |
+| **Speed Up** | 4 | Accelerate (RISKY if overloaded/near hazards) |
 
 ---
 
-## Observation Space (15 Features, Normalized to [-1, 1])
+## Observation Space (14 Features, Normalized to [-1, 1])
 
 | Index | Feature | Range | Purpose |
 |-------|---------|-------|---------|
@@ -70,49 +67,48 @@ RL discovers this balance autonomously through trial and error.
 | 2 | current_passengers | [0, 50] | Occupancy level |
 | 3 | money_earned | [0, 150000] | TSh earned |
 | 4 | current_speed | [0, 3] | Movement speed |
-| 5 | distance_to_next_light | Lookahead | Traffic light proximity |
-| 6 | distance_to_next_police | Lookahead | Police checkpoint proximity |
-| 7 | light_is_red | {0, 1} | Red light now? |
-| 8 | police_next_cell | {0, 1} | Police ahead? |
-| 9 | **must_stop_next** | {0, 1} | **CRITICAL FLAG** (police OR red light) |
-| 10 | at_high_demand_stop | {0, 1} | At pickup/dropoff? |
-| 11 | bribe_offered_now | {0, 1} | Bribe available? |
-| 12 | passengers_waiting | [0, 10] | Demand at current stop |
-| 13 | has_been_fined | {0, 1} | Already fined this episode? |
-| 14 | episode_steps | [0, 350] | Step count / max_steps |
+| 5 | light_is_red | {0, 1} | Red light now? |
+| 6 | police_checkpoint_here | {0, 1} | Police here? |
+| 7 | **must_stop_now** | {0, 1} | **CRITICAL FLAG** (police OR red light) |
+| 8 | at_high_demand_stop | {0, 1} | At pickup/dropoff? |
+| 9 | passengers_waiting | [0, 10] | Demand at current stop |
+| 10 | must_stop_next | {0, 1} | Hazard in next cell? |
+| 11 | distance_to_traffic_light | Lookahead | Traffic light proximity |
+| 12 | distance_to_police | Lookahead | Police checkpoint proximity |
+| 13 | episode_progress | [0, 1] | Step count / max_steps |
 
 ---
 
 ## Reward Structure
 
 ### Progress & Delivery
-- **+0.6**: Per step forward (encourage efficiency)
-- **+1.2×passengers**: Per passenger dropped off
+- **+2**: Per step forward (encourage efficiency)
+- **+12**: Per passenger dropped off
 - **+100**: Reaching final destination (Posta)
-- **+200**: Perfect legal trip bonus (≤33 passengers at Posta)
+- **+50**: Perfect legal trip bonus (≤33 passengers at Posta)
 
 ### Safety & Compliance
-- **+6**: Voluntarily stopping at police/red light (`must_stop_next=1` AND action=1)
-- **-45**: Ignoring police/red light (action≠1 when `must_stop_next=1`)
-- **+30**: Rejecting a bribe
-- **+15**: Accepting a bribe
+- **+25**: Voluntarily stopping at police/red light (`must_stop_now=1` AND action=3)
+- **-40**: Ignoring police/red light (action≠3 when `must_stop_now=1`)
+- **+15**: Valid pickup at stop
+- **-3**: Unnecessary stop
 
 ### Penalties
-- **-40**: Light fine (34–40 passengers at police checkpoint)
-- **-200**: Heavy fine + episode ends (>40 passengers at police)
-- **-400**: Accident + episode ends (overloaded + hard acceleration/braking OR ran red light with >40 pax)
-- **-50**: Truncation penalty (350 steps without reaching Posta)
+- **-20**: Light fine (34–40 passengers at police checkpoint)
+- **-50**: Heavy fine + episode ends (>40 passengers at police)
+- **-30**: Accident + episode ends (overloaded + speeding)
+- **-5 to -8**: Invalid pickup/dropoff actions
 
 ---
 
 ## Terminal Conditions
 
 **Success**:
-- Reach Posta (final cell) with ≥30 passengers
+- Reach Posta (final cell)
 
 **Failure**:
 - Caught with >40 passengers at police checkpoint
-- Accident (overloaded + hard acceleration/braking)
+- Accident (overloaded + speeding)
 
 **Truncation**:
 - 350 steps elapsed without success/failure
@@ -122,37 +118,36 @@ RL discovers this balance autonomously through trial and error.
 ## RL Algorithms Implemented
 
 ### 1. **DQN** (Value-Based)
-- **Architecture**: MLP policy (15 → 128 → 64 → 8)
+- **Architecture**: MLP policy (14 → 64 → 64 → 5)
 - **Training**: 300,000 timesteps
 - **Hyperparameters Tuned**: 12 configurations
   - Learning rates: 1e-4, 3e-4, 5e-4, 7e-4, 1e-3
-  - Buffer sizes: 50k, 75k, 100k
-  - Exploration fractions: 0.1, 0.15, 0.2
+  - Buffer sizes: 10k, 50k, 100k
+  - Exploration fractions: 0.25, 0.5, 1.0
 
 ### 2. **PPO** (Policy Gradient)
-- **Architecture**: MLP policy (15 → 128 → 64 → 8)
+- **Architecture**: MLP policy (14 → 64 → 64 → 5)
 - **Training**: 300,000 timesteps
 - **Hyperparameters Tuned**: 12 configurations
   - Learning rates: 1e-4, 3e-4, 5e-4, 7e-4, 1e-3
   - Entropy coefficients: 0.0, 0.005, 0.01
-  - n_steps: 2048, 4096
+  - n_steps: 512, 1024, 2048
 
 ### 3. **A2C** (Actor-Critic)
-- **Architecture**: MLP policy (15 → 128 → 64 → 8)
+- **Architecture**: MLP policy (14 → 64 → 64 → 5)
 - **Training**: 300,000 timesteps
 - **Hyperparameters Tuned**: 12 configurations
   - Learning rates: 1e-4, 3e-4, 5e-4, 7e-4, 1e-3
-  - Gamma values: 0.99, 0.995
+  - Gamma values: 0.65, 0.70, 0.75, 0.80, 0.90, 0.95, 0.995
   - n_steps: 5, 8, 10
   - Entropy coefficients: 0.0, 0.005, 0.01, 0.05
 
 ### 4. **REINFORCE** (Policy Gradient)
-- **Architecture**: Neural network policy (15 → hidden → hidden → 8)
-- **Training**: 3,000 episodes (~300,000 steps)
+- **Architecture**: Neural network policy (14 → hidden → hidden → 5)
+- **Training**: 300,000 timesteps
 - **Hyperparameters Tuned**: 12 configurations
-  - Learning rates: 1e-4, 3e-4, 5e-4, 7e-4, 1e-3
-  - Hidden sizes: 128, 256
-  - Gamma values: 0.99, 0.995
+  - Learning rates: 1e-3, 3e-3, 5e-3, 1e-2
+  - Hidden sizes: 64, 128, 256
 
 ---
 
@@ -173,16 +168,18 @@ project_root/
 │   ├── dqn/best_dqn.zip          # Best DQN model
 │   ├── ppo/best_ppo.zip          # Best PPO model
 │   ├── a2c/best_a2c.zip          # Best A2C model
-│   └── reinforce/best_reinforce.pth  # Best REINFORCE model
+│   └── reinforce/best_reinforce_policy.pth  # Best REINFORCE model
 ├── results/
 │   ├── dqn_results.json
 │   ├── ppo_results.json
 │   ├── a2c_results.json
 │   ├── reinforce_results.json
-│   └── comparison_results.json
-├── main.py                       # Run best model (interactive)
-├── random_demo.py                # Generate demo GIF
-├── comparison_eval.py             # Compare all 4 models
+│   └── plots/                    # Generated analysis plots
+├── notebooks/                    # Colab notebooks for training
+├── random_demo2.py               # Realistic Pygame demo
+├── generate_plots.py             # Generate analysis plots
+├── generate_convergence_plots.py # Generate convergence plots
+├── generalization_test.py        # Test generalization
 ├── requirements.txt              # Dependencies
 └── README.md                     # This file
 ```
@@ -219,21 +216,22 @@ Results saved to `results/*.json`.
 
 ### Visualize Random Agent (No Training)
 ```bash
-python random_demo.py
-# Generates: random_demo.gif
+python random_demo2.py
+# Generates: random_demo-pygame.gif
 ```
 
-### Compare All 4 Trained Models
+### Generate Analysis Plots
 ```bash
-python comparison_eval.py
-# Outputs: comparison table + detailed metrics
-# Saves: results/comparison_results.json
+python generate_plots.py
+python generate_convergence_plots.py
+python generalization_test.py
+# Saves plots to results/plots/
 ```
 
 ### Run Best Model (Interactive Play)
 ```bash
-python main.py
-# Shows GUI + terminal output of best-performing agent
+python record_agent_demo.py
+# Records GIF of trained agent
 ```
 
 ---
@@ -242,18 +240,16 @@ python main.py
 
 ### Expected Agent Behavior
 After training, agents should discover:
-1. **Safe operation**: Run at 34–38 passengers (just overloaded enough for profit, but survivable)
-2. **Bribe rejection**: Accept ~25% of bribes (high-risk, avoid most)
-3. **Traffic compliance**: Always stop at police/red lights (mandatory to avoid -45 penalty)
-4. **Optimal route**: Maximize passenger pickups at high-demand stops, minimize truncation
+1. **Safe operation**: Maximize passengers up to legal limit (33) or slightly above (34-40) if safe, but strictly avoid >40 (severe penalty).
+2. **Traffic compliance**: Always stop at police/red lights (mandatory to avoid -40 penalty).
+3. **Efficiency**: Minimize stops where unnecessary to maximize progress rewards.
 
 ### Why This Works
-- **Legal operation** (≤33 pax): Mean reward ≈ +100 + (passengers × 1.2) = +100 to +150
-- **Safe overloading** (34–40 pax): +15–50 from bribes, but -40 fines, net ≈ +50–100
-- **Reckless overloading** (>40 pax): -200 heavy fine OR -400 crash = CATASTROPHE
-- **Traffic violation**: -45 penalty per violation, accumulates quickly
+- **Legal operation**: High rewards from passenger delivery (+12/pax) and completion bonuses (+100 + 50).
+- **Reckless overloading** (>40 pax): -50 heavy fine OR -30 crash = CATASTROPHE.
+- **Traffic violation**: -40 penalty per violation, accumulates quickly.
 
-**Equilibrium**: 34–38 passengers, reject bribes, obey traffic → highest long-term expected reward.
+**Equilibrium**: Maximize passengers within safe limits, obey all traffic laws → highest long-term expected reward (~430).
 
 ---
 
@@ -273,30 +269,25 @@ After training, agents should discover:
 
 ---
 
-## Evaluation Metrics
+## Analysis & Visualization
 
-All models evaluated on **100 test episodes** with deterministic (greedy) action selection:
+We generate three key types of analysis plots to evaluate agent performance:
 
-| Metric | Description |
-|--------|-------------|
-| **Mean Reward** | Average cumulative reward per episode |
-| **Std Dev** | Reward variance (stability indicator) |
-| **Legal Compliance %** | Episodes ending with ≤33 passengers |
-| **Crash Rate %** | Episodes terminated early due to overloading accidents |
-| **Fine Rate %** | Episodes where agent was fined |
-| **Avg Passengers** | Average passenger count at episode end |
+1.  **Cumulative Rewards**: Compares the mean reward and variance of the best models for each algorithm over 100 evaluation episodes.
+2.  **Convergence Analysis**: Tracks the training progress (smoothed reward curves) to determine how quickly each algorithm learns.
+3.  **Generalization Test**: Evaluates the agents on unseen "edge case" scenarios (e.g., Heavy Traffic, Police State) to test robustness.
 
 ---
 
 ## Results Summary
 
-See `results/comparison_results.json` for detailed metrics.
+See `results/plots/` for generated visualizations.
 
-**Expected Ranking** (not guaranteed):
-1. PPO (most stable, best exploration-exploitation)
-2. A2C (good sample efficiency)
-3. DQN (sample efficient but slower convergence)
-4. REINFORCE (high variance, slower learning)
+**Findings**:
+1. **DQN**: Highest peak performance (~431 reward), excellent safety compliance.
+2. **PPO**: Fastest convergence (~450 episodes) and best generalization to new scenarios.
+3. **A2C**: Good initial learning but higher variance.
+4. **REINFORCE**: Slowest convergence and high instability.
 
 ---
 
@@ -313,13 +304,15 @@ python training/a2c_training.py
 python training/reinforce_training.py
 
 # 3. Generate random demo GIF
-python random_demo.py
+python random_demo2.py
 
-# 4. Compare all trained models
-python comparison_eval.py
+# 4. Generate analysis plots
+python generate_plots.py
+python generate_convergence_plots.py
+python generalization_test.py
 
-# 5. Run best model with visualization
-python main.py
+# 5. Record trained agent demo
+python record_agent_demo.py
 ```
 
 **Total training time**: ~2–3 hours on CPU, results saved for later analysis.
@@ -350,7 +343,6 @@ This project **directly addresses Tanzania's #1 road safety killer**:
 Unlike generic grid-world environments, our reward structure embeds real-world constraints:
 - Police checkpoints (law enforcement)
 - Traffic lights (infrastructure)
-- Bribe offers (corruption dilemma)
 - Overloading penalties (safety)
 
 ---

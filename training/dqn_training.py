@@ -14,68 +14,87 @@ all_results = []
 
 # Comprehensive hyperparameter grid (12 configurations)
 hyperparams = [
-    {"lr": 1e-4, "buffer_size": 50000, "exp_frac": 0.1, "exp_init": 1.0, "exp_final": 0.05},
-    {"lr": 1e-4, "buffer_size": 100000, "exp_frac": 0.15, "exp_init": 1.0, "exp_final": 0.05},
-    {"lr": 3e-4, "buffer_size": 50000, "exp_frac": 0.1, "exp_init": 1.0, "exp_final": 0.05},
-    {"lr": 3e-4, "buffer_size": 100000, "exp_frac": 0.2, "exp_init": 0.95, "exp_final": 0.01},
-    {"lr": 5e-4, "buffer_size": 75000, "exp_frac": 0.15, "exp_init": 1.0, "exp_final": 0.05},
-    {"lr": 7e-4, "buffer_size": 50000, "exp_frac": 0.2, "exp_init": 1.0, "exp_final": 0.02},
-    {"lr": 7e-4, "buffer_size": 100000, "exp_frac": 0.1, "exp_init": 0.95, "exp_final": 0.05},
-    {"lr": 1e-3, "buffer_size": 75000, "exp_frac": 0.15, "exp_init": 1.0, "exp_final": 0.03},
-    {"lr": 1e-3, "buffer_size": 100000, "exp_frac": 0.2, "exp_init": 1.0, "exp_final": 0.05},
-    {"lr": 5e-4, "buffer_size": 100000, "exp_frac": 0.1, "exp_init": 0.9, "exp_final": 0.02},
-    {"lr": 3e-4, "buffer_size": 75000, "exp_frac": 0.15, "exp_init": 1.0, "exp_final": 0.04},
-    {"lr": 7e-4, "buffer_size": 75000, "exp_frac": 0.2, "exp_init": 0.95, "exp_final": 0.03},
+    {"name": "LR_1e4_buf_10k_eps_025", "learning_rate": 1e-4, "buffer_size": 100000, "exploration_fraction": 0.25, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.65},
+    {"name": "LR_1e4_buf_50k_eps_05", "learning_rate": 1e-4, "buffer_size": 50000, "exploration_fraction": 0.5, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.70},
+    {"name": "LR_3e4_buf_10k_eps_025", "learning_rate": 3e-4, "buffer_size": 10000, "exploration_fraction": 0.25, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.75},
+    {"name": "LR_3e4_buf_50k_eps_05", "learning_rate": 3e-4, "buffer_size": 50000, "exploration_fraction": 0.5, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.77},
+    {"name": "LR_5e4_buf_10k_eps_025", "learning_rate": 5e-4, "buffer_size": 10000, "exploration_fraction": 0.25, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.1, "gamma": 0.80},
+    {"name": "LR_5e4_buf_50k_eps_05", "learning_rate": 5e-4, "buffer_size": 50000, "exploration_fraction": 0.5, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.1, "gamma": 0.85},
+    {"name": "LR_7e4_buf_10k_eps_025", "learning_rate": 7e-4, "buffer_size": 10000, "exploration_fraction": 0.25, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.02, "gamma": 0.90},
+    {"name": "LR_7e4_buf_50k_eps_05", "learning_rate": 7e-4, "buffer_size": 50000, "exploration_fraction": 0.5, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.02, "gamma": 0.95},
+    {"name": "LR_1e3_buf_10k_eps_025", "learning_rate": 1e-3, "buffer_size": 10000, "exploration_fraction": 0.25, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.995},
+    {"name": "LR_1e3_buf_50k_eps_05", "learning_rate": 1e-3, "buffer_size": 50000, "exploration_fraction": 0.5, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.67},
+    {"name": "LR_1e3_buf_100k_eps_1", "learning_rate": 1e-3, "buffer_size": 100000, "exploration_fraction": 1.0, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.05, "gamma": 0.77},
+    {"name": "LR_5e4_buf_100k_eps_1", "learning_rate": 5e-4, "buffer_size": 100000, "exploration_fraction": 1.0, "exploration_initial_eps": 1.0, "exploration_final_eps": 0.1, "gamma": 0.98},
 ]
 
-for idx, params in enumerate(hyperparams):
+results = {}
+best_config = None
+best_model = None
+
+for idx, config in enumerate(hyperparams, 1):
     print(f"\n{'='*70}")
-    print(f"DQN Configuration {idx+1}/12")
-    print(f"lr={params['lr']}, buffer={params['buffer_size']}, exp_frac={params['exp_frac']}")
+    print(f"DQN Configuration {idx}/12: {config['name']}")
     print(f"{'='*70}")
     
     env = DaladalaEnv()
     model = DQN(
         "MlpPolicy", env,
-        learning_rate=params['lr'],
-        buffer_size=params['buffer_size'],
-        exploration_fraction=params['exp_frac'],
-        exploration_initial_eps=params['exp_init'],
-        exploration_final_eps=params['exp_final'],
-        train_freq=4,
-        gradient_steps=1,
-        target_update_interval=1000,
-        verbose=0,
-        seed=42
+        learning_rate=config['learning_rate'],
+        buffer_size=config['buffer_size'],
+        exploration_fraction=config['exploration_fraction'],
+        exploration_initial_eps=config['exploration_initial_eps'],
+        exploration_final_eps=config['exploration_final_eps'],
+        gamma=config['gamma'],
+        verbose=1,
+        device='auto'
     )
     model.learn(total_timesteps=300000)
 
-    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=50)
+    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=50, deterministic=True)
     print(f"Mean Reward: {mean_reward:.2f} ± {std_reward:.2f}")
 
-    result = {
-        "config": idx + 1,
-        "hyperparams": params,
-        "mean_reward": float(mean_reward),
-        "std_reward": float(std_reward),
-        "total_timesteps": 300000,
-        "eval_episodes": 50
+    results[config['name']] = {
+        'config': config,
+        'mean_reward': mean_reward,
+        'std_reward': std_reward
     }
-    all_results.append(result)
 
     if mean_reward > best_reward:
         best_reward = mean_reward
-        model.save("models/dqn/best_dqn")
-        print("✓ NEW BEST DQN MODEL SAVED!")
+        best_config = config['name']
+        best_model = model
+        print("✓ NEW BEST DQN MODEL FOUND!")
 
     env.close()
 
+# Save best model
+if best_model:
+    best_model.save("models/dqn/best_dqn")
+    print(f"✓ Best model saved to models/dqn/best_dqn")
+
 # Save results
+results_summary = {}
+for config_name, config_results in results.items():
+    results_summary[config_name] = {
+        'mean_reward': float(config_results['mean_reward']),
+        'std_reward': float(config_results['std_reward']),
+        'hyperparameters': {
+            'learning_rate': config_results['config']['learning_rate'],
+            'buffer_size': config_results['config']['buffer_size'],
+            'exploration_fraction': config_results['config']['exploration_fraction'],
+            'exploration_initial_eps': config_results['config']['exploration_initial_eps'],
+            'exploration_final_eps': config_results['config']['exploration_final_eps'],
+            'gamma': config_results['config']['gamma']
+        }
+    }
+
 with open("results/dqn_results.json", "w") as f:
-    json.dump(all_results, f, indent=2)
+    json.dump(results_summary, f, indent=2)
 
 print(f"\n{'='*70}")
 print(f"DQN Training Complete!")
+print(f"Best Configuration: {best_config}")
 print(f"Best Mean Reward: {best_reward:.2f}")
 print(f"Results saved to results/dqn_results.json")
 print(f"{'='*70}")
