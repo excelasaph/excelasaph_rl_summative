@@ -4,6 +4,9 @@ Exposes trained models via REST API for web/Unity visualization
 Real-time WebSocket support for 3D rendering
 """
 
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, disconnect
