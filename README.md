@@ -8,7 +8,7 @@ This project applies reinforcement learning to address Tanzania's critical road 
 
 ---
 ## Video Demo
-[![Watch the Full Project Demo on YouTube](https://img.youtube.com/vi/4W0shnN6tlI/0.jpg)](https://youtu.be/4W0shnN6tlI)
+[![Watch on YouTube](https://img.shields.io/badge/Watch_on_YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/4W0shnN6tlI)
 
 ---
 
@@ -270,11 +270,11 @@ After training, agents should discover:
 
 ## Visualization
 ### 2D Simulation (Pygame)
-![2D Pygame Demo](results/demo/random_demo.gif)
+<img src="results/demo/random_demo.gif" width="500" alt="2D Pygame Demo">
 
 
 ### 3D Simulation (Web-Based)
-![3D Render Demo](results/demo/3d-render-demo.gif)
+<img src="results/demo/3d-render-demo.gif" width="100%" alt="3D Render Demo">
 
 ---
 
