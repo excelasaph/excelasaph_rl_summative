@@ -4,8 +4,8 @@ Exposes trained models via REST API for web/Unity visualization
 Real-time WebSocket support for 3D rendering
 """
 
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -578,20 +578,6 @@ def get_current_state():
         })
     except Exception as e:
         return jsonify({'error': f'State retrieval failed: {str(e)}'}), 500
-
-# ============================================================================
-# SERVE STATIC WEB FILES
-# ============================================================================
-
-@app.route('/', methods=['GET'])
-def serve_index():
-    """Serve the web interface."""
-    return app.send_static_file('index.html')
-
-@app.route('/<path:path>', methods=['GET'])
-def serve_static(path):
-    """Serve static files."""
-    return app.send_static_file(path)
 
 # ============================================================================
 # ERROR HANDLERS
