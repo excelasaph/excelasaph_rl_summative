@@ -1,10 +1,14 @@
-# Daladala Safe-Profit Agent: Learning to Survive Dar es Salaam's Overload-Corruption Trap
+# Daladala Autonomous Transit Agent: Learning to Survive Dar es Salaam's Overloading Trap
 
 ## Project Overview
 
 This project applies reinforcement learning to address Tanzania's critical road safety crisis: **42% of road deaths are daladala passengers** (WHO 2023). The average daladala carries **58 passengers in a 33-seater bus**, causing catastrophic accidents due to overloading.
 
-**The Mission**: Train RL agents to discover the optimal balance between profitability and safety—that drivers should operate at optimal capacity and always comply with traffic laws to maximize long-term rewards.
+**The Mission**: Train RL agents to discover the optimal balance between profitability and safety so that drivers should operate at optimal capacity and always comply with traffic laws to maximize long-term rewards.
+
+---
+## Video Demo
+[![Watch the Full Project Demo on YouTube](https://img.youtube.com/vi/4W0shnN6tlI/0.jpg)](https://youtu.be/4W0shnN6tlI)
 
 ---
 
@@ -155,15 +159,19 @@ RL discovers this balance autonomously through trial and error.
 
 ```
 project_root/
+├── 3d-render/                    # React + Three.js Frontend
+│   ├── src/                      
+│   ├── public/                   
+│   └── package.json              
 ├── environment/
 │   ├── __init__.py
-│   ├── daladala_env.py           # Gymnasium environment
-│   └── rendering.py              # Pygame visualization
+│   ├── daladala_env.py          
+│   └── rendering.py              
 ├── training/
-│   ├── dqn_training.py           # DQN training (12 configs)
-│   ├── ppo_training.py           # PPO training (12 configs)
-│   ├── a2c_training.py           # A2C training (12 configs)
-│   └── reinforce_training.py     # REINFORCE training (12 configs)
+│   ├── dqn_training.py           
+│   ├── ppo_training.py          
+│   ├── a2c_training.py           
+│   └── reinforce_training.py     
 ├── models/
 │   ├── dqn/best_dqn.zip          # Best DQN model
 │   ├── ppo/best_ppo.zip          # Best PPO model
@@ -174,14 +182,12 @@ project_root/
 │   ├── ppo_results.json
 │   ├── a2c_results.json
 │   ├── reinforce_results.json
-│   └── plots/                    # Generated analysis plots
-├── notebooks/                    # Colab notebooks for training
-├── random_demo2.py               # Realistic Pygame demo
-├── generate_plots.py             # Generate analysis plots
-├── generate_convergence_plots.py # Generate convergence plots
-├── generalization_test.py        # Test generalization
-├── requirements.txt              # Dependencies
-└── README.md                     # This file
+│   └── plots/                    
+├── notebooks/                    
+├── flask_api.py                  
+├── main.py                       
+├── requirements.txt              
+└── README.md                    
 ```
 
 ---
@@ -217,22 +223,31 @@ Results saved to `results/*.json`.
 ### Visualize Random Agent (No Training)
 ```bash
 python random_demo2.py
-# Generates: random_demo-pygame.gif
+# Generates: random_demo.gif
 ```
 
-### Generate Analysis Plots
+### 3D Visualization (Web-Based)
+This project includes a AAA-quality 3D visualization built with React, Three.js, and Flask.
+
+**1. Start the Backend API:**
 ```bash
-python generate_plots.py
-python generate_convergence_plots.py
-python generalization_test.py
-# Saves plots to results/plots/
+python flask_api.py
+# Server starts at http://localhost:5000
 ```
 
-### Run Best Model (Interactive Play)
+**2. Start the Frontend (in a new terminal):**
 ```bash
-python record_agent_demo.py
-# Records GIF of trained agent
+cd 3d-render
+npm install
+npm run dev
+# Open http://localhost:8080 in your browser
 ```
+
+The 3D interface allows you to:
+- Select and load different trained models (DQN, PPO, A2C, REINFORCE)
+- Watch the agent navigate a 3D city environment
+- View real-time stats (Speed, Passengers, Rewards)
+- Toggle camera views (Chase, Driver, Top-Down, Cinematic)
 
 ---
 
@@ -254,28 +269,12 @@ After training, agents should discover:
 ---
 
 ## Visualization
+### 2D Simulation (Pygame)
+![2D Pygame Demo](results/demo/random_demo.gif)
 
-### Environment Components
-- **Sandy road**: Route cells in brown
-- **Gold circles**: High-demand stops (pickup/dropoff)
-- **Blue rectangles**: Police checkpoints
-- **Red/Green circles**: Traffic lights
-- **Green rectangle with number**: Daladala bus (shows passenger count)
-- **HUD**: Real-time step, passengers, money, action, reward
 
-### Pygame Rendering
-- Frame rate: 12 FPS (adjustable)
-- Supports both `human` mode (live display) and `rgb_array` (capture frames for GIF)
-
----
-
-## Analysis & Visualization
-
-We generate three key types of analysis plots to evaluate agent performance:
-
-1.  **Cumulative Rewards**: Compares the mean reward and variance of the best models for each algorithm over 100 evaluation episodes.
-2.  **Convergence Analysis**: Tracks the training progress (smoothed reward curves) to determine how quickly each algorithm learns.
-3.  **Generalization Test**: Evaluates the agents on unseen "edge case" scenarios (e.g., Heavy Traffic, Police State) to test robustness.
+### 3D Simulation (Web-Based)
+![3D Render Demo](results/demo/3d-render-demo.gif)
 
 ---
 
@@ -290,73 +289,3 @@ See `results/plots/` for generated visualizations.
 4. **REINFORCE**: Slowest convergence and high instability.
 
 ---
-
-## How to Run the Entire Pipeline
-
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Train all 4 algorithms (48 total configurations)
-python training/dqn_training.py
-python training/ppo_training.py
-python training/a2c_training.py
-python training/reinforce_training.py
-
-# 3. Generate random demo GIF
-python random_demo2.py
-
-# 4. Generate analysis plots
-python generate_plots.py
-python generate_convergence_plots.py
-python generalization_test.py
-
-# 5. Record trained agent demo
-python record_agent_demo.py
-```
-
-**Total training time**: ~2–3 hours on CPU, results saved for later analysis.
-
----
-
-## Rubric Alignment
-
-| Criterion | Our Approach |
-|-----------|--------------|
-| **Environment Validity** | ✓ 15×15 grid, realistic route, comprehensive action/observation spaces |
-| **Policy Training** | ✓ 4 algorithms, 12 configs each, deterministic evaluation |
-| **Visualization** | ✓ Pygame 2D with interactive GUI, real-time HUD |
-| **SB3 Implementation** | ✓ DQN, PPO, A2C from stable-baselines3 + custom REINFORCE |
-| **Hyperparameter Tuning** | ✓ 48 total configurations (12 per algorithm) |
-| **Metrics & Analysis** | ✓ Comparison table, convergence analysis, safety metrics |
-
----
-
-## Non-Generic Use Case
-
-This project **directly addresses Tanzania's #1 road safety killer**:
-- **Real problem**: 4–6 hours/day traffic, 40% of fatal accidents from overloaded buses
-- **Real context**: Corruption (bribes) enables overloading despite legal limits
-- **Real economy**: Drivers earn poverty wages, forced to overload
-- **RL solution**: Discover sustainable profit-safety equilibrium
-
-Unlike generic grid-world environments, our reward structure embeds real-world constraints:
-- Police checkpoints (law enforcement)
-- Traffic lights (infrastructure)
-- Overloading penalties (safety)
-
----
-
-## Contact & Credits
-
-**Project**: Daladala Safe-Profit Agent  
-**Author**: Student name  
-**Institution**: [University]  
-**Date**: November 2025  
-**Reference**: LATRA (2023) - Tanzania road safety statistics
-
----
-
-## License
-
-This project is submitted as part of a summative assignment. All code is provided for educational purposes.
