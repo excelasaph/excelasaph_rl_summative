@@ -274,7 +274,7 @@ After training, agents should discover:
 
 
 ### 3D Simulation (Web-Based)
-<img src="results/demo/3d-render-demo.gif" width="100%" alt="3D Render Demo">
+<img src="results/demo/3d-render-demo.gif" width="500" alt="3D Render Demo">
 
 ---
 
