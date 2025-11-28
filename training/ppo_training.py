@@ -12,7 +12,7 @@ os.makedirs("results", exist_ok=True)
 best_reward = -np.inf
 all_results = []
 
-# Comprehensive hyperparameter grid (12 configurations)
+# Hyperparameter (12 configurations)
 hyperparams = [
     {"name": "LR_1e4_n_steps_512", "learning_rate": 1e-4, "n_steps": 512, "batch_size": 64, "gamma": 0.65, "clip_range": 0.2, "ent_coef": 0.0},
     {"name": "LR_1e4_n_steps_1024", "learning_rate": 1e-4, "n_steps": 1024, "batch_size": 64, "gamma": 0.70, "clip_range": 0.2, "ent_coef": 0.0},

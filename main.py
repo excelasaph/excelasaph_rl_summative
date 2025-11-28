@@ -17,9 +17,8 @@ from stable_baselines3 import DQN, PPO, A2C
 from environment import DaladalaEnv
 from training.reinforce_training import PolicyNetwork
 
-# ============================================================================
 # CONFIGURATION
-# ============================================================================
+
 WINDOW_SIZE = 600
 HUD_HEIGHT = 120
 GRID_SIZE = 15
@@ -248,7 +247,7 @@ class RealisticRenderer:
         x_pos = (screen_w - new_w) // 2
         y_pos = (screen_h - new_h) // 2
         
-        self.screen.fill((0, 0, 0)) # Fill borders with black
+        self.screen.fill((0, 0, 0)) 
         self.screen.blit(scaled_surf, (x_pos, y_pos))
         
         pygame.display.flip()
@@ -305,8 +304,6 @@ def load_model(algo_name, model_path, model_class):
     try:
         if algo_name == "REINFORCE":
             # Load REINFORCE custom model
-            # State dim: 14, Action dim: 5 (from environment specs)
-            # Note: The best saved model uses hidden_dim=64 based on the checkpoint file
             model = PolicyNetwork(state_dim=14, action_dim=5, hidden_dim=64)
             model.load_state_dict(torch.load(model_path))
             model.eval()

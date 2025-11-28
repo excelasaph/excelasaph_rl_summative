@@ -118,7 +118,7 @@ class REINFORCEAgent:
         self.policy.load_state_dict(torch.load(path + '_policy.pth', map_location=self.device))
 
 if __name__ == "__main__":
-    # 12 REINFORCE hyperparameter configurations for systematic tuning
+    # Hyperparameter (12 configurations)
     reinforce_configs = [
         {"name": "LR_1e3_hid_64", "learning_rate": 1e-3, "hidden_dim": 64},
         {"name": "LR_1e3_hid_128", "learning_rate": 1e-3, "hidden_dim": 128},
@@ -168,7 +168,7 @@ if __name__ == "__main__":
             device=device
         )
 
-        # Training loop with verbose progress
+        # Training loop
         start_time = time.time()
         episode_rewards = []
         total_steps = 0
@@ -178,7 +178,6 @@ if __name__ == "__main__":
             episode_rewards.append(ep_reward)
             total_steps += steps_per_episode
 
-            # Print progress every 50 episodes
             if (episode + 1) % 50 == 0 or episode == 0:
                 recent_avg = np.mean(episode_rewards[-50:]) if len(episode_rewards) >= 50 else np.mean(episode_rewards)
                 elapsed = time.time() - start_time
@@ -193,7 +192,7 @@ if __name__ == "__main__":
 
         training_time = time.time() - start_time
 
-        # Evaluate agent on 50 episodes with verbose feedback
+        # Evaluate agent on 50 episodes 
         print(f"\n  Evaluating on 50 episodes...")
         eval_start = time.time()
         mean_reward, std_reward = agent.evaluate(env, n_episodes=50)

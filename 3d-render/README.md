@@ -1,73 +1,150 @@
-# Welcome to your Lovable project
+# Daladala: The Corruption Dilemma
 
-## Project info
+A stunning, AAA-quality 3D reinforcement learning visualization of Dar es Salaam's daladala (minibus) transportation system, built with React Three Fiber.
 
-**URL**: https://lovable.dev/projects/5658350f-2db3-49f7-b360-77b85c0b38b8
+![Daladala Banner](https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=1200&h=400&fit=crop)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+### Visual Fidelity
+- **Photorealistic African sunset lighting** with HDR environment
+- **PBR materials** with realistic wear and reflections
+- **Volumetric atmosphere** with fog and dynamic clouds
+- **60 FPS performance** optimized for desktop and mobile
 
-**Use Lovable**
+### Authentic Dar es Salaam Experience
+- Classic yellow Toyota HiAce daladala
+- African urban environment: palm trees, buildings, signage
+- Swahili UI elements and translations
+- Overloaded passenger mechanics with visual indicators
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5658350f-2db3-49f7-b360-77b85c0b38b8) and start prompting.
+### Interactive Elements
+- **Animated passengers** that board and alight based on agent actions
+- **Dynamic bus stops** at Morocco, Kariakoo, Ubungo
+- **Police checkpoints** and **Traffic lights** with penalty logic
+- **Real-time HUD** showing speed, earnings, and passenger count
 
-Changes made via Lovable will be committed automatically to this repo.
+### Camera System
+Press keyboard numbers or use the UI to switch views:
+- **1** - Chase Cam (cinematic third-person)
+- **2** - Driver POV (see dashboard and passengers)
+- **3** - Top-Down (tactical overhead view)
+- **4** - Cinematic (auto fly-around)
 
-**Use your preferred IDE**
+### RL Integration
+Real-time WebSocket connection (Socket.IO) to the Flask RL backend:
+```json
+{
+  "action": 0-4,
+  "passengers": 42,
+  "money": 124000,
+  "must_stop": true,
+  "terminated": false,
+  "reward": 15.3
+}
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Actions
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| Action | English | Swahili | Description |
+|--------|---------|---------|-------------|
+| 0 | Move | Songa | Advance to next position |
+| 1 | Pickup | Pakia | Load passengers at stop |
+| 2 | Dropoff | Shusha | Unload passengers for revenue |
+| 3 | Stop | Simama | Wait/Slow down (for hazards) |
+| 4 | Speed Up | Kimbiza | Increase speed (risky) |
 
-Follow these steps:
+## Architecture
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+The project consists of two main parts:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1.  **Frontend (React + Three.js)**: Handles the 3D visualization, physics, and UI.
+2.  **Backend (Flask + Socket.IO)**: Hosts the trained RL models (PPO, DQN, A2C, REINFORCE) and runs the simulation logic.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Connecting Your Agent
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+The system is designed to run pre-trained models hosted on the Flask backend. The frontend connects via Socket.IO to:
+- Start episodes
+- Receive state updates
+- Visualize actions
+
+## Getting Started
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Then open [http://localhost:8080](http://localhost:8080)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Production Build
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Design System
 
-## What technologies are used for this project?
+The project uses a warm African sunset color palette:
 
-This project is built with:
+- **Primary**: Sunset orange (#E67E22)
+- **Secondary**: Daladala yellow (#FFD700)
+- **Success**: TSh green (#2ECC71)
+- **Destructive**: Fine red (#E74C3C)
+- **Atmosphere**: Dusty amber with deep blue sky gradients
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+All colors use HSL format and are defined in `src/index.css`.
 
-## How can I deploy this project?
+## Tech Stack
 
-Simply open [Lovable](https://lovable.dev/projects/5658350f-2db3-49f7-b360-77b85c0b38b8) and click on Share -> Publish.
+- **React 18** + TypeScript
+- **React Three Fiber** (Three.js for React)
+- **@react-three/drei** (3D helpers)
+- **@react-three/rapier** (Physics engine)
+- **Socket.IO Client** (Real-time communication)
+- **Zustand** (State management)
+- **Tailwind CSS** (UI styling)
+- **shadcn/ui** (UI components)
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes, you can!
+```
+src/
+├── components/
+│   ├── game/
+│   │   ├── Scene.tsx          # Main 3D canvas
+│   │   ├── Daladala.tsx       # Hero vehicle physics & mesh
+│   │   ├── Environment.tsx    # Lighting, sky, clouds
+│   │   ├── Road.tsx           # Procedural road generation
+│   │   ├── Passengers.tsx     # Passenger system & animation
+│   │   ├── HUD.tsx            # UI overlay & controls
+│   │   └── Minimap.tsx        # Navigation aid
+├── store/
+│   └── gameStore.ts           # Zustand state
+├── hooks/
+│   └── useRLConnection.ts     # Socket.IO hook
+└── pages/
+    └── Index.tsx              # Entry point
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Cultural Authenticity
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project respects and celebrates Tanzanian culture:
+- **Swahili language** integrated throughout
+- **Real daladala aesthetics** (colors, overloading)
+- **Dar es Salaam landmarks** (Kariakoo, Ubungo, Posta)
+- **East African sunset** atmosphere
+
+## License
+
+MIT License - Use for research, education, or commercial projects
+
+**Mungu akubariki!** 🇹🇿

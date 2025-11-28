@@ -18,9 +18,8 @@ import torch
 import torch.nn as nn
 import json
 
-# ============================================================================
 # CUSTOM POLICY CLASS FOR REINFORCE
-# ============================================================================
+
 class ReinforcePolicy(nn.Module):
     def __init__(self, hidden_size=64):
         super().__init__()
@@ -36,10 +35,6 @@ class ReinforcePolicy(nn.Module):
     def forward(self, x):
         return self.net(x)
 
-# ============================================================================
-# COMPATIBILITY FIX: Handle older model files with missing schedule classes
-# ============================================================================
-# These are placeholder classes for deserialization of older model files
 class FloatSchedule:
     """Placeholder for FloatSchedule from older stable-baselines3 versions"""
     def __init__(self, x):
@@ -75,9 +70,7 @@ episode_data = {
 connected_clients = set()
 is_streaming = False
 
-# ============================================================================
 # UTILITY FUNCTIONS
-# ============================================================================
 
 def load_model(algo_name, model_path):
     """Load a trained model based on algorithm."""
@@ -184,9 +177,7 @@ def env_state_to_dict():
         'light_cycle': int(env.light_cycle),
     }
 
-# ============================================================================
 # WEBSOCKET EVENT HANDLERS
-# ============================================================================
 
 def emit_rl_state():
     """Emit current RL state to all connected WebSocket clients."""
@@ -354,9 +345,7 @@ def handle_get_state():
     except Exception as e:
         emit('error', {'message': f'Failed to get state: {str(e)}'})
 
-# ============================================================================
 # API ENDPOINTS
-# ============================================================================
 
 @app.route('/api/health', methods=['GET'])
 def health():
@@ -579,9 +568,7 @@ def get_current_state():
     except Exception as e:
         return jsonify({'error': f'State retrieval failed: {str(e)}'}), 500
 
-# ============================================================================
 # ERROR HANDLERS
-# ============================================================================
 
 @app.errorhandler(404)
 def not_found(error):
@@ -591,9 +578,7 @@ def not_found(error):
 def server_error(error):
     return jsonify({'success': False, 'message': 'Internal server error'}), 500
 
-# ============================================================================
 # MAIN
-# ============================================================================
 
 if __name__ == '__main__':
     print("\n" + "="*80)
