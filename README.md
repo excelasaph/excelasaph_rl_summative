@@ -280,7 +280,7 @@ After training, agents should discover:
 
 ## Results Summary
 
-See `results/plots/` for generated visualizations.
+See `results/plots/` for visualizations.
 
 **Findings**:
 1. **DQN**: Highest peak performance (~431 reward), excellent safety compliance.
